@@ -11,13 +11,13 @@ public class RigidbodyCharacterController : MonoBehaviour
 
 
     // Input
-    private InputMaster controls = null;
+    public InputMaster controls = null;
     private Vector2 previousWalkInput = Vector2.zero;
 
 
     // Movement
     [SerializeField] private float walkForce = 100f;
-    [SerializeField] private float maxWalk = 2f, maxRun = 4.5f, maxCrouch = 0.7f;
+    [SerializeField] private float maxWalk = 2f, maxRun = 4.5f/*, maxCrouch = 0.7f*/;
     [SerializeField] private float jumpForce = 1000f;
     [SerializeField] private float airControl = 0.3f;
     [SerializeField] private LayerMask groundLayer = new LayerMask();
@@ -43,6 +43,7 @@ public class RigidbodyCharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        controls = new InputMaster();
         rigidbody = GetComponent<Rigidbody>();
         diameter = GetComponent<CapsuleCollider>().radius * 2;
         height = GetComponent<CapsuleCollider>().height;
@@ -60,7 +61,9 @@ public class RigidbodyCharacterController : MonoBehaviour
 
     private void OnEnable()
     {
-        controls = new InputMaster();
+        Cursor.lockState = CursorLockMode.Locked;
+
+        
         controls.Player.Walk.performed += ReadWalkInput;
         controls.Player.Walk.canceled += ReadWalkInput;
         controls.Player.Run.performed += ReadRunInput;
@@ -70,7 +73,9 @@ public class RigidbodyCharacterController : MonoBehaviour
 
         controls.Player.Look.performed += ReadMouseInput;
         controls.Player.Look.canceled += ReadMouseInput;
-        
+
+        controls.Player.Interact.performed += ReadInteractInput;
+
         controls.Enable();
         
     }
@@ -85,12 +90,14 @@ public class RigidbodyCharacterController : MonoBehaviour
 
         controls.Player.Look.performed -= ReadMouseInput;
         controls.Player.Look.canceled -= ReadMouseInput;
+
+        controls.Player.Interact.performed -= ReadInteractInput;
+
         controls.Disable();
     }
 
     public void ReadWalkInput(InputAction.CallbackContext ctx)
     {
-        print(previousWalkInput);
         previousWalkInput = ctx.ReadValue<Vector2>();
 
     }
@@ -110,6 +117,10 @@ public class RigidbodyCharacterController : MonoBehaviour
             rigidbody.AddForce(Vector3.up * jumpForce);
         }
     }
+    public void ReadInteractInput(InputAction.CallbackContext ctx)
+    {
+        GetComponent<Interactor>()?.Interact();
+    }
 
 
     private void RespondToTranslationInput()
@@ -121,7 +132,6 @@ public class RigidbodyCharacterController : MonoBehaviour
             currentWalkForce =
                 forward * previousWalkInput.y * walkForce +
                 right * previousWalkInput.x * walkForce;
-            print(currentWalkForce);
 
             rigidbody.AddForce(currentWalkForce * (Mathf.Clamp(Mathf.Pow(currentMaxSpeed, 2) - rigidbody.velocity.sqrMagnitude, 0, currentMaxSpeed)) * (isGrounded ? 1 : airControl));
 
@@ -152,7 +162,6 @@ public class RigidbodyCharacterController : MonoBehaviour
         {
             isGrounded = false;
         }
-        print("Grounded: " + isGrounded);
     }
 
     void CalculateLocalXZ()
@@ -186,9 +195,10 @@ public class RigidbodyCharacterController : MonoBehaviour
         }
         // movement directions
         Debug.DrawLine(transform.position, transform.position + currentWalkForce.normalized, Color.cyan);
-        Debug.DrawLine(transform.position, transform.position + rigidbody.velocity.normalized, Color.magenta);
+        if (rigidbody != null)
+            Debug.DrawLine(transform.position, transform.position + rigidbody.velocity.normalized, Color.magenta);
         // look directions
         Vector3 camPos = Camera.main.transform.position;
-        Debug.DrawLine(camPos, camPos + head.forward, Color.yellow);
+        //Debug.DrawLine(camPos, camPos + head.forward, Color.yellow);
     }
 }
