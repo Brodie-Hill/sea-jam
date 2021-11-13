@@ -16,6 +16,7 @@ public class RigidbodyCharacterController : MonoBehaviour
 
 
     // Movement
+    [Header("Movement (Translation)")]
     [SerializeField] private float walkForce = 100f;
     [SerializeField] private float maxWalk = 2f, maxRun = 4.5f/*, maxCrouch = 0.7f*/;
     [SerializeField] private float jumpForce = 1000f;
@@ -23,27 +24,34 @@ public class RigidbodyCharacterController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer = new LayerMask();
     [SerializeField] private float groundDetectionDistance = 0.05f;
 
-    private bool isGrounded = true, isRunning = false, isCrouching = false;
+    private bool isGrounded = true, isRunning = false;
     private RaycastHit groundHitInfo;
     private Vector3 currentWalkForce = Vector3.zero;
     private float currentMaxSpeed = 1.5f;
-    private Rigidbody rigidbody = null;
+    private Rigidbody rigidbody;
     private Vector3 forward, right;
 
 
     // Rotation
+    [Header("Movement (Rotation)")]
     [SerializeField] private Vector2 lookSensitivity = Vector2.zero;
     [SerializeField] private float neckRange = 180;
     [SerializeField] private Transform head = null;
     private Vector2 currentMouseDelta = Vector2.zero;
     private float xRot = 0, yRot = 0;
 
-
+    // Mounting
+    public Mountable currentMount { get; private set; } = null;
+    private CapsuleCollider collider = null;
+    private MeshCollider wallSliderCol = null;
 
     // Start is called before the first frame update
     void Awake()
     {
         controls = new InputMaster();
+        collider = GetComponent<CapsuleCollider>();
+        wallSliderCol = GetComponentInChildren<MeshCollider>();
+        currentMount = null;
         rigidbody = GetComponent<Rigidbody>();
         diameter = GetComponent<CapsuleCollider>().radius * 2;
         height = GetComponent<CapsuleCollider>().height;
@@ -52,11 +60,13 @@ public class RigidbodyCharacterController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        CalculateLocalXZ();
-        CheckGrounded();
-        RespondToTranslationInput();
-        RespondToRotationInput();
-
+        if (currentMount == null)
+        {
+            CalculateLocalXZ();
+            CheckGrounded();
+            RespondToTranslationInput();
+            RespondToRotationInput();
+        }
     }
 
     private void OnEnable()
@@ -119,13 +129,15 @@ public class RigidbodyCharacterController : MonoBehaviour
     }
     public void ReadInteractInput(InputAction.CallbackContext ctx)
     {
-        GetComponent<Interactor>()?.Interact();
+        if (currentMount == null)
+            GetComponent<Interactor>()?.Interact();
+        else Dismount();
     }
 
 
     private void RespondToTranslationInput()
     {
-        currentMaxSpeed = isRunning ? maxRun : (isCrouching ? maxCrouch : maxWalk);
+        currentMaxSpeed = isRunning ? maxRun : maxWalk;
 
         if (previousWalkInput != Vector2.zero)
         {
@@ -178,7 +190,35 @@ public class RigidbodyCharacterController : MonoBehaviour
             right = transform.right;
         }
 
+    }
 
+    public void SetMount(Mountable mount)
+    {
+        if (currentMount == null)
+        {
+            // turn off all the colliders
+            collider.enabled = false;
+            wallSliderCol.enabled = false;
+            rigidbody.isKinematic = true;
+        }
+        currentMount = mount;
+        transform.position = mount.GetMountPoint().position;
+        transform.rotation = mount.GetMountPoint().rotation;
+
+        mount.OnMounted?.Invoke();
+    }
+    public void Dismount()
+    {
+        // turn collider back on
+        collider.enabled = true;
+        wallSliderCol.enabled = true;
+        rigidbody.isKinematic = false;
+
+        transform.position = currentMount.GetDismountPoint().position;
+        transform.rotation = currentMount.GetDismountPoint().rotation;
+        currentMount = null;
+
+        currentMount?.OnDismounted?.Invoke();
     }
 
     private void OnDrawGizmos()
