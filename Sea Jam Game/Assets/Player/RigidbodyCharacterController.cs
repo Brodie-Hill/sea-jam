@@ -12,13 +12,16 @@ public class RigidbodyCharacterController : MonoBehaviour
 
     // Input
     public InputMaster controls = null;
-    private Vector2 previousWalkInput = Vector2.zero;
+    private Vector2 currentWalkInput = Vector2.zero;
 
+    // Animation
 
     // Movement
     [Header("Movement (Translation)")]
-    [SerializeField] private float walkForce = 100f;
+    [SerializeField] private float walkForce = 1000f;
+    [SerializeField] private float stoppingForce = 500f;
     [SerializeField] private float maxWalk = 2f, maxRun = 4.5f/*, maxCrouch = 0.7f*/;
+    [SerializeField] private float maxSlope = 45;
     [SerializeField] private float jumpForce = 1000f;
     [SerializeField] private float airControl = 0.3f;
     [SerializeField] private LayerMask groundLayer = new LayerMask();
@@ -28,6 +31,7 @@ public class RigidbodyCharacterController : MonoBehaviour
     private RaycastHit groundHitInfo;
     private Vector3 currentWalkForce = Vector3.zero;
     private float currentMaxSpeed = 1.5f;
+    private float minNormalY;
     private Rigidbody rigidbody;
     private Vector3 forward, right;
 
@@ -43,27 +47,29 @@ public class RigidbodyCharacterController : MonoBehaviour
     // Mounting
     public Mountable currentMount { get; private set; } = null;
     private CapsuleCollider collider = null;
-    private MeshCollider wallSliderCol = null;
 
     // Start is called before the first frame update
     void Awake()
     {
         controls = new InputMaster();
         collider = GetComponent<CapsuleCollider>();
-        wallSliderCol = GetComponentInChildren<MeshCollider>();
         currentMount = null;
         rigidbody = GetComponent<Rigidbody>();
         diameter = GetComponent<CapsuleCollider>().radius * 2;
         height = GetComponent<CapsuleCollider>().height;
+
+        minNormalY = 1*Mathf.Sin(maxSlope);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        
         if (currentMount == null)
         {
             CalculateLocalXZ();
             CheckGrounded();
+            rigidbody.useGravity = !isGrounded;
             RespondToTranslationInput();
             RespondToRotationInput();
         }
@@ -108,7 +114,7 @@ public class RigidbodyCharacterController : MonoBehaviour
 
     public void ReadWalkInput(InputAction.CallbackContext ctx)
     {
-        previousWalkInput = ctx.ReadValue<Vector2>();
+        currentWalkInput = ctx.ReadValue<Vector2>();
 
     }
     public void ReadRunInput(InputAction.CallbackContext ctx)
@@ -139,15 +145,19 @@ public class RigidbodyCharacterController : MonoBehaviour
     {
         currentMaxSpeed = isRunning ? maxRun : maxWalk;
 
-        if (previousWalkInput != Vector2.zero)
+        if (currentWalkInput != Vector2.zero)
         {
             currentWalkForce =
-                forward * previousWalkInput.y * walkForce +
-                right * previousWalkInput.x * walkForce;
+                forward * currentWalkInput.y * walkForce +
+                right * currentWalkInput.x * walkForce;
 
             rigidbody.AddForce(currentWalkForce * (Mathf.Clamp(Mathf.Pow(currentMaxSpeed, 2) - rigidbody.velocity.sqrMagnitude, 0, currentMaxSpeed)) * (isGrounded ? 1 : airControl));
-
         }
+        if (isGrounded)
+        {
+            rigidbody.AddForce(stoppingForce * -rigidbody.velocity);
+        }
+
     }
     private void RespondToRotationInput()
     {
@@ -167,6 +177,7 @@ public class RigidbodyCharacterController : MonoBehaviour
         
         if (Physics.SphereCast(transform.position+transform.up*height/2, sphereCastRadius, -transform.up, out groundHitInfo, height / 2 - sphereCastRadius + groundDetectionDistance, groundLayer))
         {
+            if (groundHitInfo.normal.y > minNormalY)
             isGrounded = true;
 
         }
@@ -198,7 +209,6 @@ public class RigidbodyCharacterController : MonoBehaviour
         {
             // turn off all the colliders
             collider.enabled = false;
-            wallSliderCol.enabled = false;
             rigidbody.isKinematic = true;
         }
         currentMount = mount;
@@ -211,7 +221,6 @@ public class RigidbodyCharacterController : MonoBehaviour
     {
         // turn collider back on
         collider.enabled = true;
-        wallSliderCol.enabled = true;
         rigidbody.isKinematic = false;
 
         transform.position = currentMount.GetDismountPoint().position;
