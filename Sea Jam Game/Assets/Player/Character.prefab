@@ -137,12 +137,12 @@ MonoBehaviour:
   stoppingForce: 200
   maxWalk: 1.6
   maxRun: 4.5
-  maxSlope: 60
+  maxSlope: 40
   jumpForce: 15000
   airControl: 0.6
   groundLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 9
   groundDetectionDistance: 0.1
   lookSensitivity: {x: 0.5, y: 0.5}
   neckRange: 75

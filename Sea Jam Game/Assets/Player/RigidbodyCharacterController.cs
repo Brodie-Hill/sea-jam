@@ -58,7 +58,7 @@ public class RigidbodyCharacterController : MonoBehaviour
         diameter = GetComponent<CapsuleCollider>().radius * 2;
         height = GetComponent<CapsuleCollider>().height;
 
-        minNormalY = 1*Mathf.Sin(maxSlope);
+        minNormalY = Mathf.Abs(1*Mathf.Sin(maxSlope));
     }
 
     // Update is called once per frame
@@ -177,8 +177,7 @@ public class RigidbodyCharacterController : MonoBehaviour
         
         if (Physics.SphereCast(transform.position+transform.up*height/2, sphereCastRadius, -transform.up, out groundHitInfo, height / 2 - sphereCastRadius + groundDetectionDistance, groundLayer))
         {
-            if (groundHitInfo.normal.y > minNormalY)
-            isGrounded = true;
+            isGrounded = groundHitInfo.normal.y > minNormalY;
 
         }
         else
@@ -248,6 +247,8 @@ public class RigidbodyCharacterController : MonoBehaviour
             Debug.DrawLine(transform.position, transform.position + rigidbody.velocity.normalized, Color.magenta);
         // look directions
         Vector3 camPos = Camera.main.transform.position;
-        //Debug.DrawLine(camPos, camPos + head.forward, Color.yellow);
+        Debug.DrawLine(camPos, camPos + head.forward, Color.yellow);
+        Vector3 temp = new Vector3((transform.position + forward).x, WaveManager.singleton.GetWaveHeightAtPosition(transform.position + forward), (transform.position + forward).z);
+        Gizmos.DrawSphere(temp, 0.1f);
     }
 }
