@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waterLevel: 49.7
-  amplitude: 0.4
-  waveLength: 2
-  speed: 1
+  xAmplitude: 0.3
+  xWaveLength: 1
+  xSpeed: 2
+  zAmplitude: 1
+  zWaveLength: 6
+  zSpeed: 0.3

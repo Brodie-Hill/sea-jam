@@ -11,7 +11,6 @@ public class RigidbodyCharacterController : MonoBehaviour
 
 
     // Input
-    public InputMaster controls = null;
     private Vector2 currentWalkInput = Vector2.zero;
 
     // Animation
@@ -49,9 +48,8 @@ public class RigidbodyCharacterController : MonoBehaviour
     private CapsuleCollider collider = null;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        controls = new InputMaster();
         collider = GetComponent<CapsuleCollider>();
         currentMount = null;
         rigidbody = GetComponent<Rigidbody>();
@@ -73,6 +71,11 @@ public class RigidbodyCharacterController : MonoBehaviour
             RespondToTranslationInput();
             RespondToRotationInput();
         }
+        else
+        {
+            transform.position = currentMount.GetMountPoint().position;
+            transform.rotation = currentMount.GetMountPoint().rotation;
+        }
     }
 
     private void OnEnable()
@@ -80,36 +83,34 @@ public class RigidbodyCharacterController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         
-        controls.Player.Walk.performed += ReadWalkInput;
-        controls.Player.Walk.canceled += ReadWalkInput;
-        controls.Player.Run.performed += ReadRunInput;
-        controls.Player.Run.canceled += ReadRunInput;
-        controls.Player.Jump.performed += ReadJumpInput;
-        controls.Player.Jump.canceled += ReadJumpInput;
+        InputManager.controls.Player.Walk.performed += ReadWalkInput;
+        InputManager.controls.Player.Walk.canceled += ReadWalkInput;
+        InputManager.controls.Player.Run.performed += ReadRunInput;
+        InputManager.controls.Player.Run.canceled += ReadRunInput;
+        InputManager.controls.Player.Jump.performed += ReadJumpInput;
+        InputManager.controls.Player.Jump.canceled += ReadJumpInput;
 
-        controls.Player.Look.performed += ReadMouseInput;
-        controls.Player.Look.canceled += ReadMouseInput;
+        InputManager.controls.Player.Look.performed += ReadMouseInput;
+        InputManager.controls.Player.Look.canceled += ReadMouseInput;
 
-        controls.Player.Interact.performed += ReadInteractInput;
-
-        controls.Enable();
-        
+        InputManager.controls.Player.Interact.performed += ReadInteractInput;
+        InputManager.controls.Player.Enable();
     }
     private void OnDisable()
     {
-        controls.Player.Walk.performed -= ReadWalkInput;
-        controls.Player.Walk.canceled -= ReadWalkInput;
-        controls.Player.Run.performed -= ReadRunInput;
-        controls.Player.Run.canceled -= ReadRunInput;
-        controls.Player.Jump.performed -= ReadJumpInput;
-        controls.Player.Jump.canceled -= ReadJumpInput;
+        InputManager.controls.Player.Walk.performed -= ReadWalkInput;
+        InputManager.controls.Player.Walk.canceled -= ReadWalkInput;
+        InputManager.controls.Player.Run.performed -= ReadRunInput;
+        InputManager.controls.Player.Run.canceled -= ReadRunInput;
+        InputManager.controls.Player.Jump.performed -= ReadJumpInput;
+        InputManager.controls.Player.Jump.canceled -= ReadJumpInput;
 
-        controls.Player.Look.performed -= ReadMouseInput;
-        controls.Player.Look.canceled -= ReadMouseInput;
+        InputManager.controls.Player.Look.performed -= ReadMouseInput;
+        InputManager.controls.Player.Look.canceled -= ReadMouseInput;
 
-        controls.Player.Interact.performed -= ReadInteractInput;
+        InputManager.controls.Player.Interact.performed -= ReadInteractInput;
 
-        controls.Disable();
+        InputManager.controls.Player.Disable();
     }
 
     public void ReadWalkInput(InputAction.CallbackContext ctx)
@@ -211,22 +212,26 @@ public class RigidbodyCharacterController : MonoBehaviour
             rigidbody.isKinematic = true;
         }
         currentMount = mount;
-        transform.position = mount.GetMountPoint().position;
-        transform.rotation = mount.GetMountPoint().rotation;
 
+        InputManager.controls.Player.Disable();
         mount.OnMounted?.Invoke();
     }
     public void Dismount()
     {
+        if (currentMount == null) return;
+
         // turn collider back on
         collider.enabled = true;
         rigidbody.isKinematic = false;
 
         transform.position = currentMount.GetDismountPoint().position;
         transform.rotation = currentMount.GetDismountPoint().rotation;
-        currentMount = null;
+        
 
+        InputManager.controls.Player.Enable();
         currentMount?.OnDismounted?.Invoke();
+
+        currentMount = null;
     }
 
     private void OnDrawGizmos()
@@ -248,7 +253,5 @@ public class RigidbodyCharacterController : MonoBehaviour
         // look directions
         Vector3 camPos = Camera.main.transform.position;
         Debug.DrawLine(camPos, camPos + head.forward, Color.yellow);
-        Vector3 temp = new Vector3((transform.position + forward).x, WaveManager.singleton.GetWaveHeightAtPosition(transform.position + forward), (transform.position + forward).z);
-        Gizmos.DrawSphere(temp, 0.1f);
     }
 }

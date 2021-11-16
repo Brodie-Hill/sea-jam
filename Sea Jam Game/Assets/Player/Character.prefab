@@ -46,6 +46,8 @@ GameObject:
   - component: {fileID: 1917233174293094585}
   - component: {fileID: 8218308540582289715}
   - component: {fileID: 5445764829919660163}
+  - component: {fileID: 2834063283763286745}
+  - component: {fileID: 7098222071637181230}
   m_Layer: 7
   m_Name: Character
   m_TagString: Untagged
@@ -164,6 +166,37 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 127
   rayOrigin: {fileID: 2756911501960132764}
+--- !u!114 &2834063283763286745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649949418451764123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e221abce10931b4dbc017fd4f7a9866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  submergedDepth: 1.5
+  displacementAmount: 0.075
+--- !u!114 &7098222071637181230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649949418451764123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e2abecdcd461e04abacbaeb313fcfb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fluidDensity: 997
+  fluidDragLinear: 30
+  fluidDragAngular: 0
+  bouyantPoints:
+  - {fileID: 2834063283763286745}
 --- !u!1 &2737824477095385688
 GameObject:
   m_ObjectHideFlags: 0

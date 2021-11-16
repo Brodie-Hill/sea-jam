@@ -171,7 +171,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _Amplitude: 0.4
+    - _Amplitude: 0.8
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -196,11 +196,12 @@ Material:
     - _Metallic1: 0
     - _Metallic2: 0
     - _Metallic3: 0
-    - _NormalStrength: 0.61
+    - _NormalStrength: 0.29
+    - _Normal_Rotation: 90
     - _NumLayersCount: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _PrimaryTiling: 0.05
+    - _PrimaryTiling: 0.01
     - _Primary_Normal_Map_Tiling: 5
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -209,7 +210,7 @@ Material:
     - _Secondary_Normal_Map_Tiling: 5
     - _ShallowDeepBlend: 0.04
     - _ShallowDeepDepth: 0
-    - _Smoothness: 0.765
+    - _Smoothness: 0.381
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
@@ -221,6 +222,12 @@ Material:
     - _Surface: 0
     - _Wavelength: 2
     - _WorkflowMode: 1
+    - _XAmplitude: 0.5
+    - _XSpeed: -1
+    - _XWavelength: 4
+    - _ZAmplitude: -2
+    - _ZSpeed: -1
+    - _ZWavelength: 1
     - _ZWrite: 1
     - _depthStrength: 0.091
     - _landBlendDepth: -2.28
