@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: Camera Blend Test
   m_EditorClassIdentifier: 
   m_CustomBlends:
-  - m_From: Player Camera
-    m_To: Boat Camera
+  - m_From: CM vcam player
+    m_To: CM vcam boat
     m_Blend:
       m_Style: 1
-      m_Time: 2
+      m_Time: 1
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: Boat Camera
-    m_To: Player Camera
+  - m_From: CM vcam boat
+    m_To: CM vcam player
     m_Blend:
       m_Style: 3
-      m_Time: 2
+      m_Time: 1
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []

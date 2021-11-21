@@ -95,6 +95,8 @@ public class RigidbodyCharacterController : MonoBehaviour
 
         InputManager.controls.Player.Interact.performed += ReadInteractInput;
         InputManager.controls.Player.Enable();
+
+        InputManager.controls.Vehicle.Exit.performed += ReadDismountInput;
     }
     private void OnDisable()
     {
@@ -111,6 +113,8 @@ public class RigidbodyCharacterController : MonoBehaviour
         InputManager.controls.Player.Interact.performed -= ReadInteractInput;
 
         InputManager.controls.Player.Disable();
+
+        InputManager.controls.Vehicle.Exit.performed -= ReadDismountInput;
     }
 
     public void ReadWalkInput(InputAction.CallbackContext ctx)
@@ -205,16 +209,25 @@ public class RigidbodyCharacterController : MonoBehaviour
 
     public void SetMount(Mountable mount)
     {
+        StartCoroutine(Mount(mount));
+    }
+    private IEnumerator Mount(Mountable mount)
+    {
         if (currentMount == null)
         {
             // turn off all the colliders
             collider.enabled = false;
             rigidbody.isKinematic = true;
         }
-        currentMount = mount;
-
+        
         InputManager.controls.Player.Disable();
         mount.OnMounted?.Invoke();
+        yield return new WaitForSeconds(mount.GetMountTime());
+        currentMount = mount;
+    }
+    public void ReadDismountInput(InputAction.CallbackContext ctx)
+    {
+        Dismount();
     }
     public void Dismount()
     {
@@ -250,8 +263,7 @@ public class RigidbodyCharacterController : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + currentWalkForce.normalized, Color.cyan);
         if (rigidbody != null)
             Debug.DrawLine(transform.position, transform.position + rigidbody.velocity.normalized, Color.magenta);
-        // look directions
-        Vector3 camPos = Camera.main.transform.position;
-        Debug.DrawLine(camPos, camPos + head.forward, Color.yellow);
     }
+
+
 }

@@ -4,9 +4,7 @@ using Cinemachine;
 
 public class CinemachineSwitcher : MonoBehaviour
 {
-
-    [SerializeField]
-    private InputAction action;
+    public static CinemachineSwitcher singleton;
 
     [SerializeField]
     private CinemachineVirtualCamera vcam1; // player camera
@@ -14,54 +12,26 @@ public class CinemachineSwitcher : MonoBehaviour
     [SerializeField]
     private CinemachineVirtualCamera vcam2; // boat camera
 
-    private Animator animator;
-
-    private bool PlayerCamera = true;
 
     private void Awake()
     {
-       // animator = GetComponent<Animator>();
+        if (singleton == null)
+            singleton = this;
+        else if (singleton != this)
+        {
+            Debug.Log("InputManager singleton: destroying duplicate instance of WaveManager");
+            Destroy(this);
+        }
     }
 
-    private void OnEnable()
+    public void SwitchToOne()
     {
-        action.Enable();
-    }
-
-    private void OnDisable()
-    {
-        action.Disable();
-    }
-    void Start()
-    {
-        action.performed += _ => SwitchPriority(); //SwitchState();
-    }
-
-    private void SwitchState()
-    {
-        if (PlayerCamera)
-        {
-            animator.Play("PlayerCamera");
-        }
-        else
-        {
-            animator.Play("BoatCamera");
-        }
-        PlayerCamera = !PlayerCamera;
-    }
-   
-    private void SwitchPriority()
-    {
-        if(PlayerCamera)
-        {
-            vcam1.Priority = 0;
-            vcam2.Priority = 1;
-        }
-        else
-        {
             vcam1.Priority = 1;
             vcam2.Priority = 0;
-        }
-        PlayerCamera = !PlayerCamera;
+    }
+    public void SwitchToTwo()
+    {
+        vcam2.Priority = 1;
+        vcam1.Priority = 0;
     }
 }

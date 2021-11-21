@@ -28,8 +28,6 @@ public class BoatController : MonoBehaviour
         InputManager.controls.Vehicle.Rudder.canceled += ReadRudderInput;
         InputManager.controls.Vehicle.Thrust.performed += ctx => { isThrusting = ctx.ReadValueAsButton(); };
         InputManager.controls.Vehicle.Thrust.canceled += ctx => { isThrusting = ctx.ReadValueAsButton(); };
-
-        InputManager.controls.Vehicle.Exit.performed += ctx => { if (ctx.ReadValueAsButton()) DismountPlayer(); };
     }
     private void OnDisable()
     {
@@ -46,7 +44,6 @@ public class BoatController : MonoBehaviour
         RespondToRudderInput();
         RespondToTempInput();
         rb.AddTorque(new Vector3(0, currentRudderAngle*rb.velocity.sqrMagnitude, 0));
-        Debug.DrawLine(rudder.position, rudder.position + rudder.forward * thrust);
     }
 
     public void ReadRudderInput(InputAction.CallbackContext ctx)
@@ -59,7 +56,7 @@ public class BoatController : MonoBehaviour
         currentRudderAngle += rudderSensitivity*currentRudderInput;
         currentRudderAngle = Mathf.Clamp(currentRudderAngle, -maxDeflection, maxDeflection);
 
-        rudder.localRotation = Quaternion.Euler(0, currentRudderAngle, 0);
+        rudder.localRotation = Quaternion.Euler(0, -currentRudderAngle, 0);
     }
     private void RespondToTempInput()
     {
@@ -74,10 +71,5 @@ public class BoatController : MonoBehaviour
             rb.AddForce(transform.forward*thrust*boost);
         }
 
-    }
-
-    private void DismountPlayer()
-    {
-        FindObjectOfType<RigidbodyCharacterController>().Dismount();
     }
 }

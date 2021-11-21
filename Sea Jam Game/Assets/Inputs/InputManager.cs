@@ -20,10 +20,4 @@ public class InputManager : MonoBehaviour
         controls = new InputMaster();
         //controls.Enable();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
