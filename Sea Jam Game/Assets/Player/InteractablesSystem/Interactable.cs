@@ -11,7 +11,7 @@ public class Interactable : MonoBehaviour
 
     //public UnityEvent OnEnterProximity;
     public UnityEvent OnLookOver;
-    public UnityEvent OnInteract;
+    public UnityEvent<Interactor> OnInteract;
     public UnityEvent OnLookAway;
     //public UnityEvent OnExitProximity;
 
@@ -21,6 +21,7 @@ public class Interactable : MonoBehaviour
     }
     private void OnDisable()
     {
+        OnLookAway.Invoke();
         Interactables.Remove(this);
     }
 

@@ -20,4 +20,13 @@ public class InputManager : MonoBehaviour
         controls = new InputMaster();
         //controls.Enable();
     }
+
+    public void LockMouse()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+    public void FreeMouse()
+    {
+        Cursor.lockState = CursorLockMode.None;
+    }
 }

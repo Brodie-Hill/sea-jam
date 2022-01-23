@@ -46,6 +46,7 @@ public class RigidbodyCharacterController : MonoBehaviour
     // Mounting
     public Mountable currentMount { get; private set; } = null;
     private CapsuleCollider collider = null;
+    private Interactor interactor = null;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +56,8 @@ public class RigidbodyCharacterController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         diameter = GetComponent<CapsuleCollider>().radius * 2;
         height = GetComponent<CapsuleCollider>().height;
+
+        interactor = GetComponent<Interactor>();
 
         minNormalY = Mathf.Abs(1*Mathf.Sin(maxSlope));
     }
@@ -80,9 +83,8 @@ public class RigidbodyCharacterController : MonoBehaviour
 
     private void OnEnable()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        InputManager.singleton.LockMouse();
 
-        
         InputManager.controls.Player.Walk.performed += ReadWalkInput;
         InputManager.controls.Player.Walk.canceled += ReadWalkInput;
         InputManager.controls.Player.Run.performed += ReadRunInput;
@@ -215,9 +217,10 @@ public class RigidbodyCharacterController : MonoBehaviour
     {
         if (currentMount == null)
         {
-            // turn off all the colliders
+            // turn off all the colliders and interactions
             collider.enabled = false;
             rigidbody.isKinematic = true;
+            interactor.enabled = false;
         }
         
         InputManager.controls.Player.Disable();
@@ -233,9 +236,10 @@ public class RigidbodyCharacterController : MonoBehaviour
     {
         if (currentMount == null) return;
 
-        // turn collider back on
+        // turn collider and interactor back on
         collider.enabled = true;
         rigidbody.isKinematic = false;
+        interactor.enabled = true;
 
         transform.position = currentMount.GetDismountPoint().position;
         transform.rotation = currentMount.GetDismountPoint().rotation;
