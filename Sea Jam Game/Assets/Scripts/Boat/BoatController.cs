@@ -43,7 +43,7 @@ public class BoatController : MonoBehaviour
     {
         RespondToRudderInput();
         RespondToTempInput();
-        rb.AddTorque(new Vector3(0, currentRudderAngle*rb.velocity.sqrMagnitude, 0));
+        rb.AddTorque(new Vector3(0, currentRudderAngle*rb.velocity.magnitude, 0));
     }
 
     public void ReadRudderInput(InputAction.CallbackContext ctx)
@@ -66,8 +66,7 @@ public class BoatController : MonoBehaviour
                 Vector3.ProjectOnPlane(transform.up, Vector3.up),
                 Vector3.ProjectOnPlane(transform.forward, Vector3.up)
             );
-            boost = 1+Mathf.Lerp(4, 0, Mathf.InverseLerp(0, 50, boost));
-            print(boost);
+            boost = 1+Mathf.Lerp(3, 0, Mathf.InverseLerp(0, 50, boost));
             rb.AddForce(transform.forward*thrust*boost);
         }
 

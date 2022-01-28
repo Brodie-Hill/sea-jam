@@ -5070,10 +5070,10 @@
     "m_Guid": {
         "m_GuidSerialized": "03a76a49-cf9c-4f2c-8ec7-87974adaf25d"
     },
-    "m_Name": "Deep Color Depth Factor Factor",
+    "m_Name": "Deep Color Depth Factor",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Deep Color Depth Factor Factor",
-    "m_DefaultReferenceName": "_Deep_Color_Depth_Factor_Factor",
+    "m_RefNameGeneratedByDisplayName": "Deep Color Depth Factor",
+    "m_DefaultReferenceName": "_Deep_Color_Depth_Factor",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -10664,7 +10664,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "fbfdd171284949e89c6738b8a486f04e",
     "m_Id": 0,
-    "m_DisplayName": "Deep Color Depth Factor Factor",
+    "m_DisplayName": "Deep Color Depth Factor",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",

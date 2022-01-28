@@ -1,9 +1,5 @@
 
-color based on depth
-
 color based on height
-
-alpha based on depth
 
 alpha based on fresnel
 

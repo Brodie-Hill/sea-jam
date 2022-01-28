@@ -114,11 +114,11 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DeepTint: {r: 0.16862746, g: 0.29803923, b: 0.3019608, a: 0.9843137}
+    - _DeepTint: {r: 0.10834221, g: 0.39739716, b: 0.41509432, a: 0.9843137}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _LandTint: {r: 1, g: 1, b: 1, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _SurfaceTint: {r: 0.34117648, g: 0.5372549, b: 0.5764706, a: 0.5294118}
+    - _SurfaceTint: {r: 0.16286932, g: 0.35067034, b: 0.4245283, a: 0.5294118}
   m_BuildTextureStacks: []
 --- !u!114 &5237458439734282401
 MonoBehaviour:
