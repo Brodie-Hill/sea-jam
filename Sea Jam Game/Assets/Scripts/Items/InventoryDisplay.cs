@@ -46,9 +46,11 @@ public class InventoryDisplay : MonoBehaviour
     private void UpdateUI()
     {
         Item item;
+        int count;
         for (int i = 0; i < slots.Length; i++)
         {
-            item = inventory.Peek(i);
+            item = inventory.PeekItem(i);
+            count = inventory.PeekCount(i);
             if (item == null) {
                 slots[i].ClearSlot();
             }
@@ -56,6 +58,7 @@ public class InventoryDisplay : MonoBehaviour
             {
                 slots[i].AddItem(item);
             }
+            slots[i].UpdateCount(count);
         }
     }
 

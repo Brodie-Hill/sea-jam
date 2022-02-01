@@ -9,15 +9,19 @@ public class Inventory : MonoBehaviour
     public event Action onUpdatedCallback;
 
     private Item[] items;
+    private int[] counts;
+
     [SerializeField] int capacity = 20;
 
     private void Start()
     {
         items = new Item[capacity];
+        counts = new int[capacity];
     }
+    
     public bool Add(Item item)
     {
-        int freeSpace = NextFreeSpace();
+        int freeSpace = NextFreeSpace(item);
 
         if (freeSpace == -1)
         {
@@ -26,6 +30,7 @@ public class Inventory : MonoBehaviour
         }
 
         items[freeSpace] = item;
+        counts[freeSpace]++; // items only added 1 at a time for now
 
         onUpdatedCallback?.Invoke();
 
@@ -36,15 +41,16 @@ public class Inventory : MonoBehaviour
 
     public void Remove(Item item)
     {
-        int index = IndexOf(item);
-        if (index != -1)
-            items[index] = null;
-        onUpdatedCallback?.Invoke();
+            Remove(IndexOf(item));
     }
     public void Remove(int index)
     {
-        if (Peek(index) != null)
-            items[index] = null;
+        if (PeekItem(index) != null)
+        {
+            if (--counts[index] == 0)
+                items[index] = null;
+        }
+            
         onUpdatedCallback?.Invoke();
     }
 
@@ -59,11 +65,14 @@ public class Inventory : MonoBehaviour
     }
 
 
-    private int NextFreeSpace()
+    private int NextFreeSpace(Item item)
     {
         for (int i = 0; i < capacity; i++)
         {
+            // if there is a free space
             if (items[i] == null) return i;
+            // or if there is a stack of these items that is not full
+            if (items[i] == item && counts[i] < item.GetStackSize()) return i;
         }
         return -1;
     }
@@ -78,10 +87,15 @@ public class Inventory : MonoBehaviour
 
 
     // accessability methods
-    public Item Peek(int index)
+    public Item PeekItem(int index)
     {
         if (index < 0 || index >= capacity) return null;
         return items[index];
+    }
+    public int PeekCount(int index)
+    {
+        if (index < 0 || index >= capacity) return -1;
+        return counts[index];
     }
     public int Capacity()
     {

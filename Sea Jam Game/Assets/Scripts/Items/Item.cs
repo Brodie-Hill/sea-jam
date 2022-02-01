@@ -11,6 +11,8 @@ public class Item : ScriptableObject
     private Sprite sprite = null;
     [SerializeField]
     private GameObject droppedModel = null;
+    [SerializeField]
+    private int stackSize = 99;
 
     public Sprite GetSprite()
     {
@@ -19,5 +21,9 @@ public class Item : ScriptableObject
     public GameObject GetDrop()
     {
         return droppedModel;
+    }
+    public int GetStackSize()
+    {
+        return stackSize;
     }
 }

@@ -15,3 +15,4 @@ MonoBehaviour:
   name: Storage Box
   sprite: {fileID: 21300000, guid: 5d3ed735fac0876448a791311be1dc6a, type: 3}
   droppedModel: {fileID: 7302431281087777337, guid: f8eec2862d25c534ba17b5ab2f127be8, type: 3}
+  stackSize: 3
