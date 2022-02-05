@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.21
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.10145714, g: 0.15187037, b: 0.21152574, a: 0.21}
+  m_IndirectSpecularColor: {r: 0.10145705, g: 0.15187037, b: 0.21152544, a: 0.21}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -359,7 +359,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-567822
+  m_Name: pb_Mesh-3074
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5109,6 +5109,79 @@ Terrain:
   m_GroupingID: 0
   m_RenderingLayerMask: 1
   m_AllowAutoConnect: 1
+--- !u!1001 &1783327049
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 39.839
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 53.901
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 61.132
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.28116933
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.95965827
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 147.34
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
+      propertyPath: m_Name
+      value: boatv4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 08037dbabe136b14485ef877d1a8ca6a, type: 3}
 --- !u!4 &1813938396 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1471551458354133307, guid: beadc44f90bb86b4e8cbb7e37dc70a8c, type: 3}
